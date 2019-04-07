@@ -653,9 +653,10 @@ body {
   position: fixed;
   top: 30vh;
   right: 2rem;
-  display: inline-block;
+  display: block;
   float: right;
   padding: 2%;
+  text-align: right;
 }
 #header-post a {
   color: inherit;
@@ -772,6 +773,8 @@ body {
   clear: both;
   text-align: right;
   padding-top: 1rem;
+  width: 17rem;
+  float: right;
 }
 #header-post #toc a:hover {
   color: #d41c46;
