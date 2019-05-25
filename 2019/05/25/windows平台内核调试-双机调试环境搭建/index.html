@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="##0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   ##0x02 环境搭">
+    <meta name="description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在">
 <meta property="og:type" content="article">
 <meta property="og:title" content="windows平台内核调试-双机调试环境搭建">
 <meta property="og:url" content="http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/index.html">
 <meta property="og:site_name" content="Taolaw">
-<meta property="og:description" content="##0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   ##0x02 环境搭">
+<meta property="og:description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/2.png?raw=true">
@@ -22,10 +22,10 @@
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/7.png?raw=true">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/8.png?raw=true">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/9.png?raw=true">
-<meta property="og:updated_time" content="2019-05-25T06:58:20.911Z">
+<meta property="og:updated_time" content="2019-05-25T07:02:52.151Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows平台内核调试-双机调试环境搭建">
-<meta name="twitter:description" content="##0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   ##0x02 环境搭">
+<meta name="twitter:description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在">
 <meta name="twitter:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true">
     
     
@@ -110,7 +110,7 @@
 
     </div>
     <div id="toc">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-环境搭建"><span class="toc-number">2.</span> <span class="toc-text">0x02 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机的配置"><span class="toc-number">2.1.</span> <span class="toc-text">1.虚拟机的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-被调试机的设置"><span class="toc-number">2.2.</span> <span class="toc-text">2.被调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-调试机的设置"><span class="toc-number">2.3.</span> <span class="toc-text">3.调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置内核符号表"><span class="toc-number">2.4.</span> <span class="toc-text">4.设置内核符号表</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -149,7 +149,7 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>##0x00 前言<br>最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建．</p>
+    <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建．</p>
 <p>##0x01 测试环境</p>
 <blockquote>
 <ul>
@@ -160,11 +160,11 @@
 <li>windbg –&gt; 调试器</li>
 </ul>
 </blockquote>
-<p>##0x02 环境搭建<br>首先在此说明一下，此处的双机调试是用两台虚拟机来实现的，相对来说更适合于<code>linux</code>和<code>macos</code>用户的方案，如果是<code>windows</code>则可使用其他方式，而且相对来说资源占用更少.</p>
-<p>###1.虚拟机的配置<br>虚拟机的安装在这里就不在叙述，安装好虚拟机以后，我们打开<code>virtual machine settings</code>–&gt;<code>Add</code>–&gt;<code>serial port</code>–&gt;<code>finish</code>,如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true" alt="1"><br>随后我们选择<code>Use socket(named pipe)</code>选项，这里需要输入一个文件的位置来做socket连接的转储，相当于调试信息转存的中转站，这里只需要指定就可以，稍后会自动在所设置目录自动创建文件，我这里是<code>com1</code>文件，这台虚拟机是xp，是作为被调试机用的，所以我们选择<code>server</code>,接着勾选<code>I/O Mode</code>,使此虚拟机支持cpu中断,如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/2.png?raw=true" alt="2"><br>接着设置调试机，基本和上面的设置一样，区别是，这次是选择<code>client</code>,不勾选<code>I/O Mode</code>选项，如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/3.png?raw=true" alt="3"><br>Ok,到这里虚拟机的设置就完成了，接下来是被调试机的设置，我们打开被调试机</p>
-<p>###2.被调试机的设置<br>这里先拿xp来说一下，windows7及以上的系统设置和xp略有不同，稍后会叙述．打开被调试机，<code>win+R</code>键入<code>c:\boot.ini</code>打开系统启动配置.然后添加一行配置，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/4.png?raw=true" alt="4"><br>这里的<code>debugport</code>需要和刚才设置的文件的名字一样，<code>baudrate</code>默认为<code>115200</code>，然后<code>ctrl+s</code>保存，再次重启就会多出一个支持调试的启动选项．如图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/5.png?raw=true" alt="5"></p>
-<p>###3.调试机的设置<br>打开调试机，安装好<code>windbg</code>，打开windbg，键入<code>ctrl+k</code>然后勾选<code>pipe</code>选项，然后确定，随后windbg就会等待被调试机的连入，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/6.png?raw=true" alt="6"><br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/7.png?raw=true" alt="7"><br>这时我们需要重启被调试机,进入支持debug的启动选项，这时我们观察windbg已经连接到了目标主机，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/8.png?raw=true" alt="8"></p>
-<p>###4.设置内核符号表<br>在内核调试下，按<code>g</code>可让目标主机继续运行，如果想让目标中断可选择调试器的<code>debug</code>–&gt;<code>Break</code>选项，即可把控制权交还调试器，随后我们加载内核调试需要的符号表,首先需要调试机联网，随后在调试器键入<code>ctrl+s</code>打开符号表路径设置，输入如下<code>SRV*c:\symbols* https://msdl.microsoft.com/download/symbols</code>这里的意思是告诉调试器，首先去c盘的<code>symbols</code>目录找符号表，如果找不到就联网到微软的符号表服务器远程下载，下载的文件同样会存到<code>symbols</code>目录方便下次使用.所以需要手动到c盘新建一个名字为<code>symbols</code>的空文件夹．随后在调试器的命令行输入<code>.reload /f</code>重新加载符号表，一般来说第一次都会联网下载符号表的，下载过程中由于某些文件变化符号表已经不维护，所以会出现部分找不到的情况，但基本影响不大，如这里的报错<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/9.png?raw=true" alt="9"></p>
+<h2 id="0x02-环境搭建"><a href="#0x02-环境搭建" class="headerlink" title="0x02 环境搭建"></a>0x02 环境搭建</h2><p>首先在此说明一下，此处的双机调试是用两台虚拟机来实现的，相对来说更适合于<code>linux</code>和<code>macos</code>用户的方案，如果是<code>windows</code>则可使用其他方式，而且相对来说资源占用更少.</p>
+<h3 id="1-虚拟机的配置"><a href="#1-虚拟机的配置" class="headerlink" title="1.虚拟机的配置"></a>1.虚拟机的配置</h3><p>虚拟机的安装在这里就不在叙述，安装好虚拟机以后，我们打开<code>virtual machine settings</code>–&gt;<code>Add</code>–&gt;<code>serial port</code>–&gt;<code>finish</code>,如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true" alt="1"><br>随后我们选择<code>Use socket(named pipe)</code>选项，这里需要输入一个文件的位置来做socket连接的转储，相当于调试信息转存的中转站，这里只需要指定就可以，稍后会自动在所设置目录自动创建文件，我这里是<code>com1</code>文件，这台虚拟机是xp，是作为被调试机用的，所以我们选择<code>server</code>,接着勾选<code>I/O Mode</code>,使此虚拟机支持cpu中断,如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/2.png?raw=true" alt="2"><br>接着设置调试机，基本和上面的设置一样，区别是，这次是选择<code>client</code>,不勾选<code>I/O Mode</code>选项，如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/3.png?raw=true" alt="3"><br>Ok,到这里虚拟机的设置就完成了，接下来是被调试机的设置，我们打开被调试机</p>
+<h3 id="2-被调试机的设置"><a href="#2-被调试机的设置" class="headerlink" title="2.被调试机的设置"></a>2.被调试机的设置</h3><p>这里先拿xp来说一下，windows7及以上的系统设置和xp略有不同，稍后会叙述．打开被调试机，<code>win+R</code>键入<code>c:\boot.ini</code>打开系统启动配置.然后添加一行配置，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/4.png?raw=true" alt="4"><br>这里的<code>debugport</code>需要和刚才设置的文件的名字一样，<code>baudrate</code>默认为<code>115200</code>，然后<code>ctrl+s</code>保存，再次重启就会多出一个支持调试的启动选项．如图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/5.png?raw=true" alt="5"></p>
+<h3 id="3-调试机的设置"><a href="#3-调试机的设置" class="headerlink" title="3.调试机的设置"></a>3.调试机的设置</h3><p>打开调试机，安装好<code>windbg</code>，打开windbg，键入<code>ctrl+k</code>然后勾选<code>pipe</code>选项，然后确定，随后windbg就会等待被调试机的连入，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/6.png?raw=true" alt="6"><br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/7.png?raw=true" alt="7"><br>这时我们需要重启被调试机,进入支持debug的启动选项，这时我们观察windbg已经连接到了目标主机，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/8.png?raw=true" alt="8"></p>
+<h3 id="4-设置内核符号表"><a href="#4-设置内核符号表" class="headerlink" title="4.设置内核符号表"></a>4.设置内核符号表</h3><p>在内核调试下，按<code>g</code>可让目标主机继续运行，如果想让目标中断可选择调试器的<code>debug</code>–&gt;<code>Break</code>选项，即可把控制权交还调试器，随后我们加载内核调试需要的符号表,首先需要调试机联网，随后在调试器键入<code>ctrl+s</code>打开符号表路径设置，输入如下<code>SRV*c:\symbols* https://msdl.microsoft.com/download/symbols</code>这里的意思是告诉调试器，首先去c盘的<code>symbols</code>目录找符号表，如果找不到就联网到微软的符号表服务器远程下载，下载的文件同样会存到<code>symbols</code>目录方便下次使用.所以需要手动到c盘新建一个名字为<code>symbols</code>的空文件夹．随后在调试器的命令行输入<code>.reload /f</code>重新加载符号表，一般来说第一次都会联网下载符号表的，下载过程中由于某些文件变化符号表已经不维护，所以会出现部分找不到的情况，但基本影响不大，如这里的报错<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/9.png?raw=true" alt="9"></p>
 
   </div>
 </article>
@@ -190,7 +190,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-环境搭建"><span class="toc-number">2.</span> <span class="toc-text">0x02 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机的配置"><span class="toc-number">2.1.</span> <span class="toc-text">1.虚拟机的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-被调试机的设置"><span class="toc-number">2.2.</span> <span class="toc-text">2.被调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-调试机的设置"><span class="toc-number">2.3.</span> <span class="toc-text">3.调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置内核符号表"><span class="toc-number">2.4.</span> <span class="toc-text">4.设置内核符号表</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
