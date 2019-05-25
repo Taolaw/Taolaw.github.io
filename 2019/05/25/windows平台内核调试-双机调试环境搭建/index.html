@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="##0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   ##0x02 环境搭">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows平台内核调试-双机调试环境搭建">
+<meta property="og:url" content="http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/index.html">
+<meta property="og:site_name" content="Taolaw">
+<meta property="og:description" content="##0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   ##0x02 环境搭">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/2.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/3.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/4.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/5.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/6.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/7.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/8.png?raw=true">
+<meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/9.png?raw=true">
+<meta property="og:updated_time" content="2019-05-25T06:58:20.911Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="windows平台内核调试-双机调试环境搭建">
+<meta name="twitter:description" content="##0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   ##0x02 环境搭">
+<meta name="twitter:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.jpeg">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.jpeg" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.jpeg">
+          
+        
+    
+    <!-- title -->
+    <title>windows平台内核调试-双机调试环境搭建</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="https://taolaw.github.io/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019/04/06/cve-2009-0927-Adobe-Reader缓冲区溢出漏洞分析/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&text=windows平台内核调试-双机调试环境搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&is_video=false&description=windows平台内核调试-双机调试环境搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=windows平台内核调试-双机调试环境搭建&body=Check out this article: http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&name=windows平台内核调试-双机调试环境搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        windows平台内核调试-双机调试环境搭建
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+        <span itemprop="name">Taolaw</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-25T03:02:16.000Z" itemprop="datePublished">2019-05-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>##0x00 前言<br>最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建．</p>
+<p>##0x01 测试环境</p>
+<blockquote>
+<ul>
+<li>VMware 15</li>
+<li>windows 7 x86 –&gt; 调试机</li>
+<li>windows xp –&gt; 被调试机</li>
+<li>kali linux –&gt; 物理机</li>
+<li>windbg –&gt; 调试器</li>
+</ul>
+</blockquote>
+<p>##0x02 环境搭建<br>首先在此说明一下，此处的双机调试是用两台虚拟机来实现的，相对来说更适合于<code>linux</code>和<code>macos</code>用户的方案，如果是<code>windows</code>则可使用其他方式，而且相对来说资源占用更少.</p>
+<p>###1.虚拟机的配置<br>虚拟机的安装在这里就不在叙述，安装好虚拟机以后，我们打开<code>virtual machine settings</code>–&gt;<code>Add</code>–&gt;<code>serial port</code>–&gt;<code>finish</code>,如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true" alt="1"><br>随后我们选择<code>Use socket(named pipe)</code>选项，这里需要输入一个文件的位置来做socket连接的转储，相当于调试信息转存的中转站，这里只需要指定就可以，稍后会自动在所设置目录自动创建文件，我这里是<code>com1</code>文件，这台虚拟机是xp，是作为被调试机用的，所以我们选择<code>server</code>,接着勾选<code>I/O Mode</code>,使此虚拟机支持cpu中断,如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/2.png?raw=true" alt="2"><br>接着设置调试机，基本和上面的设置一样，区别是，这次是选择<code>client</code>,不勾选<code>I/O Mode</code>选项，如下图所示<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/3.png?raw=true" alt="3"><br>Ok,到这里虚拟机的设置就完成了，接下来是被调试机的设置，我们打开被调试机</p>
+<p>###2.被调试机的设置<br>这里先拿xp来说一下，windows7及以上的系统设置和xp略有不同，稍后会叙述．打开被调试机，<code>win+R</code>键入<code>c:\boot.ini</code>打开系统启动配置.然后添加一行配置，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/4.png?raw=true" alt="4"><br>这里的<code>debugport</code>需要和刚才设置的文件的名字一样，<code>baudrate</code>默认为<code>115200</code>，然后<code>ctrl+s</code>保存，再次重启就会多出一个支持调试的启动选项．如图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/5.png?raw=true" alt="5"></p>
+<p>###3.调试机的设置<br>打开调试机，安装好<code>windbg</code>，打开windbg，键入<code>ctrl+k</code>然后勾选<code>pipe</code>选项，然后确定，随后windbg就会等待被调试机的连入，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/6.png?raw=true" alt="6"><br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/7.png?raw=true" alt="7"><br>这时我们需要重启被调试机,进入支持debug的启动选项，这时我们观察windbg已经连接到了目标主机，如下图<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/8.png?raw=true" alt="8"></p>
+<p>###4.设置内核符号表<br>在内核调试下，按<code>g</code>可让目标主机继续运行，如果想让目标中断可选择调试器的<code>debug</code>–&gt;<code>Break</code>选项，即可把控制权交还调试器，随后我们加载内核调试需要的符号表,首先需要调试机联网，随后在调试器键入<code>ctrl+s</code>打开符号表路径设置，输入如下<code>SRV*c:\symbols* https://msdl.microsoft.com/download/symbols</code>这里的意思是告诉调试器，首先去c盘的<code>symbols</code>目录找符号表，如果找不到就联网到微软的符号表服务器远程下载，下载的文件同样会存到<code>symbols</code>目录方便下次使用.所以需要手动到c盘新建一个名字为<code>symbols</code>的空文件夹．随后在调试器的命令行输入<code>.reload /f</code>重新加载符号表，一般来说第一次都会联网下载符号表的，下载过程中由于某些文件变化符号表已经不维护，所以会出现部分找不到的情况，但基本影响不大，如这里的报错<br><img src="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/9.png?raw=true" alt="9"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="https://taolaw.github.io/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&text=windows平台内核调试-双机调试环境搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&is_video=false&description=windows平台内核调试-双机调试环境搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=windows平台内核调试-双机调试环境搭建&body=Check out this article: http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&title=windows平台内核调试-双机调试环境搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/&name=windows平台内核调试-双机调试环境搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 Magic_Googol
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="https://taolaw.github.io/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
