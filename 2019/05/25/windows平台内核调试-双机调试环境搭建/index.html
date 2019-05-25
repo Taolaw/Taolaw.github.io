@@ -6,12 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在">
+    <meta name="description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． 0x01 测试环境  VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在此说明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="windows平台内核调试-双机调试环境搭建">
 <meta property="og:url" content="http://yoursite.com/2019/05/25/windows平台内核调试-双机调试环境搭建/index.html">
 <meta property="og:site_name" content="Taolaw">
-<meta property="og:description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在">
+<meta property="og:description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． 0x01 测试环境  VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在此说明">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/2.png?raw=true">
@@ -22,10 +22,10 @@
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/7.png?raw=true">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/8.png?raw=true">
 <meta property="og:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/9.png?raw=true">
-<meta property="og:updated_time" content="2019-05-25T07:02:52.151Z">
+<meta property="og:updated_time" content="2019-05-25T07:07:32.447Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="windows平台内核调试-双机调试环境搭建">
-<meta name="twitter:description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． ##0x01 测试环境   VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在">
+<meta name="twitter:description" content="0x00 前言最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建． 0x01 测试环境  VMware 15 windows 7 x86 –&amp;gt; 调试机 windows xp –&amp;gt; 被调试机 kali linux –&amp;gt; 物理机 windbg –&amp;gt; 调试器   0x02 环境搭建首先在此说明">
 <meta name="twitter:image" content="https://github.com/Taolaw/picture/blob/master/kernel-debug-setting/1.png?raw=true">
     
     
@@ -110,7 +110,7 @@
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-环境搭建"><span class="toc-number">2.</span> <span class="toc-text">0x02 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机的配置"><span class="toc-number">2.1.</span> <span class="toc-text">1.虚拟机的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-被调试机的设置"><span class="toc-number">2.2.</span> <span class="toc-text">2.被调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-调试机的设置"><span class="toc-number">2.3.</span> <span class="toc-text">3.调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置内核符号表"><span class="toc-number">2.4.</span> <span class="toc-text">4.设置内核符号表</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-测试环境"><span class="toc-number">2.</span> <span class="toc-text">0x01 测试环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-环境搭建"><span class="toc-number">3.</span> <span class="toc-text">0x02 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机的配置"><span class="toc-number">3.1.</span> <span class="toc-text">1.虚拟机的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-被调试机的设置"><span class="toc-number">3.2.</span> <span class="toc-text">2.被调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-调试机的设置"><span class="toc-number">3.3.</span> <span class="toc-text">3.调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置内核符号表"><span class="toc-number">3.4.</span> <span class="toc-text">4.设置内核符号表</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -150,8 +150,7 @@
 
   <div class="content" itemprop="articleBody">
     <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>最近比较忙，很久没有照顾博客了，前几天尝试了windows平台下的内核调试，在搭建环境时遇到了不少麻烦，在此记录一下关于内核调试的环境搭建．</p>
-<p>##0x01 测试环境</p>
-<blockquote>
+<h2 id="0x01-测试环境"><a href="#0x01-测试环境" class="headerlink" title="0x01 测试环境"></a>0x01 测试环境</h2><blockquote>
 <ul>
 <li>VMware 15</li>
 <li>windows 7 x86 –&gt; 调试机</li>
@@ -190,7 +189,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-环境搭建"><span class="toc-number">2.</span> <span class="toc-text">0x02 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机的配置"><span class="toc-number">2.1.</span> <span class="toc-text">1.虚拟机的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-被调试机的设置"><span class="toc-number">2.2.</span> <span class="toc-text">2.被调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-调试机的设置"><span class="toc-number">2.3.</span> <span class="toc-text">3.调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置内核符号表"><span class="toc-number">2.4.</span> <span class="toc-text">4.设置内核符号表</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-前言"><span class="toc-number">1.</span> <span class="toc-text">0x00 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-测试环境"><span class="toc-number">2.</span> <span class="toc-text">0x01 测试环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-环境搭建"><span class="toc-number">3.</span> <span class="toc-text">0x02 环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-虚拟机的配置"><span class="toc-number">3.1.</span> <span class="toc-text">1.虚拟机的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-被调试机的设置"><span class="toc-number">3.2.</span> <span class="toc-text">2.被调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-调试机的设置"><span class="toc-number">3.3.</span> <span class="toc-text">3.调试机的设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-设置内核符号表"><span class="toc-number">3.4.</span> <span class="toc-text">4.设置内核符号表</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
